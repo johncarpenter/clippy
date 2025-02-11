@@ -6,6 +6,13 @@ import clippy.utils.logger as logger
 
 
 def cmd_exec(str):
+    # Check for potentially destructive commands
+    dangerous_commands = ['rm -rf', 'sudo rm', 'mkfs', 'dd', 'shutdown', 'reboot', '> /', 'chmod -R 777']
+    for cmd in dangerous_commands:
+        if cmd in str.lower():
+            logger.log_r("ERROR: Potentially destructive command detected: " + cmd)
+            logger.log_r("This command could cause system damage and has been blocked")
+            exit(1)
     logger.debug("\n------------------------ Executing Command: Start ------------------------")
     logger.debug("\n$>>" + str)    
     output = os.popen(str).read().strip()
