@@ -69,8 +69,9 @@ def get_env(profile, key):
         return config.get('default', key)
     
     logger.debug("No Value Found in DEFAULT SECTION as well")
-    logger.log_r('Value not found in [Default Profile] use `clippy configure`comamnd')
-    exit()
+    logger.debug('Value not found in [Default Profile] use `clippy configure`comamnd')
+
+    return None
 
     
 def get_profiles():

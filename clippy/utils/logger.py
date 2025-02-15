@@ -16,6 +16,10 @@ def log_c(*argv):
         click.echo(click.style(argv[1], fg='green', bold=True))
 
 
+def log_error(str2):
+    click.echo(click.style(str2, fg='red', bold=True))
+
+
 def log_r(str2):  
     click.echo(click.style(str2, fg='red', bold=True))
 
