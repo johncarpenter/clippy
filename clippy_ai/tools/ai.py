@@ -1,4 +1,3 @@
-
 from jinja2 import Template
 import os
 
@@ -6,7 +5,7 @@ from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
 from pydantic import BaseModel
 
-from clippy.utils import logger
+from clippy_ai.utils import logger
 
 def configure_openai_model(model="gpt-4o-mini", temperature=0.5, api_key=None):
     """Configure the model for the AI tool"""

@@ -6,7 +6,7 @@ import click
 
 import configparser 
 
-import clippy.utils.logger as logger
+import clippy_ai.utils.logger as logger
 
 config = configparser.SafeConfigParser()
 
@@ -86,5 +86,5 @@ def log_config():
 
 
 def find_version():
-    version = pkg_resources.require("clippy")[0].version  
+    version = pkg_resources.require("clippy-ai")[0].version  
     print (version)      

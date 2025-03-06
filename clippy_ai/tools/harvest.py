@@ -3,11 +3,11 @@
 import requests
 import json
 from pydantic import BaseModel, Field
-import clippy.utils.config as config  
-import clippy.utils.logger as logger
+import clippy_ai.utils.config as config  
+import clippy_ai.utils.logger as logger
 
 from datetime import datetime
-from clippy.tools.tmetric import TimeEntry
+from clippy_ai.tools.tmetric import TimeEntry
 
 HOST_URL = "https://api.harvestapp.com/v2"
 

@@ -14,14 +14,14 @@ dependencies = [
     "jinja2 (>=3.1.5,<4.0.0)",
     "langchain-community (>=0.3.17,<0.4.0)"
 ]   
-packages = [{include = "clippy", from = "clippy"}]
+packages = [{include = "clippy_ai"}]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-clippy = "clippy.clippy:clippy"
+clippy = "clippy_ai.clippy:clippy"
 
 [tool.poetry.group.dev.dependencies]
 setuptools = "^75.8.0"

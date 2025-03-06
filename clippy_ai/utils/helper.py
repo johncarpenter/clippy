@@ -2,7 +2,7 @@ import os
 import subprocess
 import pkgutil
 
-import clippy.utils.logger as logger
+import clippy_ai.utils.logger as logger
 
 
 def cmd_exec(str):

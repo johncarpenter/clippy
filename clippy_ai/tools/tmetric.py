@@ -3,8 +3,8 @@
 import requests
 import json
 from pydantic import BaseModel, Field
-import clippy.utils.config as config  
-import clippy.utils.logger as logger
+import clippy_ai.utils.config as config
+import clippy_ai.utils.logger as logger
 
 HOST_URL = "https://app.tmetric.com/api/v3"
 

@@ -3,18 +3,18 @@ import os
 import click
 import pkg_resources
 from datetime import datetime
-from clippy.tools.ai import configure_openai_model, execute_prompt, load_prompt_template
-import clippy.utils.logger as logger
-import clippy.utils.helper as utils
-import clippy.utils.config as config    
-from clippy.tools.tmetric import get_tmetric_projects, add_tmetric_time_entry, TimeEntry
-from clippy.tools.ai import execute_prompt_structured
-from clippy.tools.tmetric import TimeEntry
-from clippy.tools.harvest import get_harvest_projects, add_harvest_time_entry
-from clippy.utils.history import get_input_with_history
+from clippy_ai.tools.ai import configure_openai_model, execute_prompt, load_prompt_template
+import clippy_ai.utils.logger as logger
+import clippy_ai.utils.helper as utils
+import clippy_ai.utils.config as config    
+from clippy_ai.tools.tmetric import get_tmetric_projects, add_tmetric_time_entry, TimeEntry
+from clippy_ai.tools.ai import execute_prompt_structured
+from clippy_ai.tools.tmetric import TimeEntry
+from clippy_ai.tools.harvest import get_harvest_projects, add_harvest_time_entry
+from clippy_ai.utils.history import get_input_with_history
 
 
-VERSION = pkg_resources.require("clippy")[0].version  
+VERSION = pkg_resources.require("clippy-ai")[0].version  
  
 def debug_logging(verbose):
     if verbose == 1:

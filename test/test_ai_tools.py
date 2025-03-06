@@ -1,6 +1,6 @@
 import pytest
 import os
-from clippy.tools.ai import load_prompt_template, execute_prompt
+from clippy_ai.tools.ai import load_prompt_template, execute_prompt
 from langchain.schema import AIMessage
 from unittest.mock import patch, MagicMock
 
@@ -19,7 +19,7 @@ def test_load_prompt_template():
     template_content = load_prompt_template('base_system', variables)
     assert isinstance(template_content, str)
 
-@patch('clippy.tools.ai.ChatOpenAI')
+@patch('clippy_ai.tools.ai.ChatOpenAI')
 def test_execute_prompt(mock_chat):
     # Setup mock
     mock_instance = MagicMock()
