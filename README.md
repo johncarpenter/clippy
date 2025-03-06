@@ -11,6 +11,22 @@ Clippy is a collection of command-line tools for working with AI. `clippy` is a 
 ```brew install pyenv``` is a good way to do this.
 
 
+## Development
+
+Uses poetry to manage dependencies and build.
+
+```bash
+poetry install
+```
+
+To run the script and display the available commands: 
+
+```bash
+%> poetry run clippy
+```
+
+
+
 ## Getting Started
 
 Installing or updating the command line tool is done with 
