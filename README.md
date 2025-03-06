@@ -1,44 +1,29 @@
-# AI Tools
+# Clippy AI
 
-Clippy is a collection of command-line tools for working with AI. `clippy` is a python library and you will need python run time installed. 
+Clippy AI is a set of command-line tools designed to make your life easier when working with AI, time tracking, and more.
 
-### Prerequisites
+## Features
 
-- Python 3.10 or newer
-- pip (Python package installer)
-- An OpenAI API key
-- Pyenv is optional but suggested.
-```brew install pyenv``` is a good way to do this.
+- **AI Assistance**: Send prompts to OpenAI models and get responses directly in your terminal
+- **Time Tracking**: Integrate with TMetric and Harvest for seamless time entry management
+- **Configuration Management**: Easy setup for API keys and preferences
 
+## Installation
 
-## Development
-
-Uses poetry to manage dependencies and build.
+You can install Clippy AI directly from PyPI:
 
 ```bash
-poetry install
+pip install clippy-ai
 ```
-
-To run the script and display the available commands: 
-
-```bash
-%> poetry run clippy
-```
-
-
-
-## Getting Started
-
-Installing or updating the command line tool is done with 
-
-```bash
-pip install -U git+ssh://git@github.com/johncarpenter/clippy.git
-```
-You will need git configured on your local machine. 
-
-This will install ```clippy``` command line tools.
 
 ## Usage
+
+To use Clippy AI, you can run the following command:
+
+```bash
+clippy --version
+```
+
 
 To run the script and display the available commands: 
 
@@ -53,7 +38,9 @@ Options:
 
 Commands:
   configure
-  
+  ai
+  cmd
+  time
 ```
 
 ### Configure the tool
@@ -71,8 +58,7 @@ Currently the tool has the following functions:
 - `ai`: Send a prompt to OpenAI and get a response
 - `cmd`: Send a prompt to OpenAI and get a response that executes a command
 - `configure`: Configure the OpenAI API key
-
-
+- `time`: Track time spent on a task
 
 ## AI Assistant
 
@@ -90,10 +76,15 @@ The `cmd` command allows you to send prompts to OpenAI and get a response that e
 clippy cmd "List all files in the current directory"
 ```
 
-## Configuration
+## Time Tracking
 
-The `configure` command allows you to configure the OpenAI API key:
+Time tracking can be configured to use TMetric and/or Harvest Tools. 
+
+The `time` command allows you to track time spent on a task:
 
 ```bash
-clippy configure
+clippy time -p "Development task, worked from 9-11 today"
 ```
+
+
+
