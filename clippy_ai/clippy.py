@@ -7,7 +7,7 @@ from clippy_ai.tools.ai import configure_openai_model, execute_prompt, load_prom
 import clippy_ai.utils.logger as logger
 import clippy_ai.utils.helper as utils
 import clippy_ai.utils.config as config    
-from clippy_ai.tools.tmetric import get_tmetric_projects, add_tmetric_time_entry, TimeEntry
+from clippy_ai.tools.tmetric import Project, get_tmetric_projects, add_tmetric_time_entry, TimeEntry
 from clippy_ai.tools.ai import execute_prompt_structured
 from clippy_ai.tools.tmetric import TimeEntry
 from clippy_ai.tools.harvest import get_harvest_projects, add_harvest_time_entry
@@ -115,6 +115,51 @@ def get_available_systems():
         systems.append('all')
     return systems
 
+def edit_time_entry(time_entry, projects):
+    """Edit a time entry"""
+
+    if not time_entry:
+        time_entry = TimeEntry()
+
+    if not time_entry.project:
+        time_entry.project = Project(projects[0]['id'], projects[0]['name'], projects[0]['client'])
+
+    logger.log_bl("Editing time entry")
+    logger.log_bl(f"Time entry: {time_entry.model_dump()}")
+    
+    logger.log_bl("Available projects:")
+    for i, project in enumerate(projects):
+        logger.log_bl(f"{i+1}. {project['name']} ({project['client']})")
+
+    current_project_index = next((i for i, p in enumerate(projects) 
+                                if p['id'] == time_entry.project.id), 0)
+    project_index = int(click.prompt(
+        "Select project number", 
+        default=str(current_project_index + 1)
+    )) - 1
+
+    if 0 <= project_index < len(projects):
+        selected_project = projects[project_index]
+        time_entry.project.id = selected_project['id']
+        time_entry.project.name = selected_project['name']  
+        time_entry.project.client = selected_project['client']
+
+    # Edit description
+    new_description = click.prompt("Description", default=time_entry.description)
+    time_entry.description = new_description
+
+    # Edit start time
+    new_start_time = click.prompt("Start time (YYYY-MM-DDTHH:MM:SS)", default=time_entry.start_time)
+    time_entry.start_time = new_start_time
+
+    # Edit end time 
+    new_end_time = click.prompt("End time (YYYY-MM-DDTHH:MM:SS)", default=time_entry.end_time)
+    time_entry.end_time = new_end_time
+
+    return time_entry
+
+
+
 @click.command()
 @click.option('-v', count=True, help='Enable verbose logging')
 @click.option('-p', '--prompt', prompt=False)
@@ -154,7 +199,7 @@ def time(v, prompt, system):
         prompt_template = load_prompt_template('timesheets', {'input': prompt, 'projects': projects, 'today': today})
         response = execute_prompt_structured(TimeEntry, prompt_template, model)
      
-        if click.confirm("Would you like to edit this time entry before submitting?", abort=False):
+        if not response or click.confirm("Would you like to edit this time entry before submitting?", abort=False):
             response = edit_time_entry(response, projects)
             
             logger.debug(f"--Updated time entry: {response.model_dump()}")
@@ -177,57 +222,19 @@ def time(v, prompt, system):
         prompt_template = load_prompt_template('timesheets', {'input': prompt, 'projects': projects, 'today': today})
         response = execute_prompt_structured(TimeEntry, prompt_template, model)
 
-
-        if response:
-            logger.log_bl(f"Time entry received from OpenAI: {response.model_dump()}")
-            # Allow user to edit the time entry before submitting
-            if click.confirm("Would you like to edit this time entry before submitting?", abort=False):
-                response = edit_time_entry(response, projects)
-                
-                logger.log_bl(f"Updated time entry: {response.model_dump()}")
+        # Allow user to edit the time entry before submitting
+        if not response or click.confirm("Would you like to edit this time entry before submitting?", abort=False):
+            response = edit_time_entry(response, projects)
             
-            if click.confirm(f"Add time entry to harvest: {response.model_dump()}", abort=False):
-                # Add time entry to harvest              
-                add_harvest_time_entry(response)
-                logger.log_bl(f"Time entry added to harvest: {response}")
-        else:
-            logger.log_error("No time entry received from OpenAI")
+            logger.debug(f"--Updated time entry: {response.model_dump()}")
+        
+        if click.confirm(f"Add time entry to harvest: {response.model_dump()}", abort=False):
+            # Add time entry to harvest              
+            add_harvest_time_entry(response)
+            logger.log_bl(f"Time entry added to harvest: {response}")
 
     
-    def edit_time_entry(time_entry, projects):
-        """Edit a time entry"""
-        logger.log_bl("Editing time entry")
-        logger.log_bl(f"Time entry: {time_entry.model_dump()}")
-        logger.log_bl("Available projects:")
-        for i, project in enumerate(projects):
-            logger.log_bl(f"{i+1}. {project['name']} ({project['client']})")
-        
-        current_project_index = next((i for i, p in enumerate(projects) 
-                                    if p['id'] == time_entry.project.id), 0)
-        project_index = int(get_input_with_history(
-            "Select project number", 
-            default=str(current_project_index + 1)
-        )) - 1
-        
-        if 0 <= project_index < len(projects):
-            selected_project = projects[project_index]
-            time_entry.project.id = selected_project['id']
-            time_entry.project.name = selected_project['name']  
-            time_entry.project.client = selected_project['client']
-
-        # Edit description
-        new_description = get_input_with_history("Description", default=time_entry.description)
-        time_entry.description = new_description
-        
-        # Edit start time
-        new_start_time = get_input_with_history("Start time (YYYY-MM-DDTHH:MM:SS)", default=time_entry.start_time)
-        time_entry.start_time = new_start_time
-
-        # Edit end time 
-        new_end_time = get_input_with_history("End time (YYYY-MM-DDTHH:MM:SS)", default=time_entry.end_time)
-        time_entry.end_time = new_end_time
-        
-        return time_entry
+   
 
 clippy.add_command(configure)
 clippy.add_command(ai)
