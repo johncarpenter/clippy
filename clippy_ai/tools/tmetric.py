@@ -1,5 +1,6 @@
 # tools to interact with tmetric rest endpoints
 
+from datetime import datetime, timedelta
 import requests
 import json
 from pydantic import BaseModel, Field
@@ -9,15 +10,15 @@ import clippy_ai.utils.logger as logger
 HOST_URL = "https://app.tmetric.com/api/v3"
 
 class Project(BaseModel):
-    id: int = Field(description='The id of the project')
-    name: str = Field(description='The name of the project')
-    client: str = Field(description='The client of the project')
+    id: int = Field(default=0, description='The id of the project')
+    name: str = Field(default="", description='The name of the project')
+    client: str = Field(default="", description='The client of the project')
 
 class TimeEntry(BaseModel):
-    start_time: str = Field(description='The start time of the time entry in YYYY-MM-DDTHH:MM:SS format, use the current timezone')
-    end_time: str = Field(description='The end time of the time entry in YYYY-MM-DDTHH:MM:SS format, use the current timezone')
-    project: Project = Field(description='The project of the time entry')
-    description: str = Field(description='The description of the time entry, Do not include date and time in the description')
+    start_time: str = Field(default=(datetime.now() - timedelta(minutes=30)).isoformat(), description='The start time of the time entry in YYYY-MM-DDTHH:MM:SS format, use the current timezone')
+    end_time: str = Field(default=datetime.now().isoformat(), description='The end time of the time entry in YYYY-MM-DDTHH:MM:SS format, use the current timezone')
+    project: Project = Field(default_factory=lambda: Project(), description='The project of the time entry')
+    description: str = Field(default="", description='The description of the time entry, Do not include date and time in the description')
 
 
 
