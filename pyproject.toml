@@ -1,7 +1,7 @@
 [project]
-name = "clippy"
-version = "0.1.1"
-description = ""
+name = "clippy-ai"
+version = "0.1.2"
+description = "Clippy AI is a set of command line tools that makes my life easier. YMMV"
 authors = [
     {name = "John Carpenter",email = "john@2linessoftware.com"}
 ]
