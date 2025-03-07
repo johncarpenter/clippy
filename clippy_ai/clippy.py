@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import json
 import os
 import click
 import pkg_resources
@@ -199,6 +200,10 @@ def time(v, prompt, system):
         prompt_template = load_prompt_template('timesheets', {'input': prompt, 'projects': projects, 'today': today})
         response = execute_prompt_structured(TimeEntry, prompt_template, model)
      
+
+        logger.log_bl(
+            f"Time entry received from OpenAI: {json.dumps(response.model_dump(), indent=2)}"
+        )
         if not response or click.confirm("Would you like to edit this time entry before submitting?", abort=False):
             response = edit_time_entry(response, projects)
             
@@ -223,6 +228,9 @@ def time(v, prompt, system):
         response = execute_prompt_structured(TimeEntry, prompt_template, model)
 
         # Allow user to edit the time entry before submitting
+        logger.log_bl(
+            f"Time entry received from OpenAI: {json.dumps(response.model_dump(), indent=2)}"
+        )
         if not response or click.confirm("Would you like to edit this time entry before submitting?", abort=False):
             response = edit_time_entry(response, projects)
             
